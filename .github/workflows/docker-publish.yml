@@ -1,0 +1,27 @@
+name: Publish Docker Image - Ubuntu
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:    
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: main  # or specify the branch or tag to pull from
+
+      - name: Build and push combined Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: |
+            crhubottom/egcbotv2:latest
+            crhubottom/egcbotv2:main
